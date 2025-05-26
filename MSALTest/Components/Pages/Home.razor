@@ -5,6 +5,7 @@
 
 @code {
     private bool showMessage = false;
+    private string StatusMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -23,8 +24,7 @@
                     config / web  App Serviceの「Web構成（Web Settings）」設定 v8.0
                     api - version 使用するAPIのバージョン（固定文字列、安定バージョン）2023-01-01
                 */
-        //var url = "https://management.azure.com/subscriptions/5ab88880-b74f-4fe9-bafc-bf8a63007568/katayma-denso-rg/katayma-denso-AP-OAuth/v8.0?api-version=2023-01-01";
-        var url = "https://management.azure.com/subscriptions/5ab88880-b74f-4fe9-bafc-bf8a63007568/katayma-denso-rg/katayma-denso-AP-OAuth";
+        var url = "https://management.azure.com/subscriptions/5ab88880-b74f-4fe9-bafc-bf8a63007568/katayma-denso-rg/katayma-denso-AP-OAuth/v8.0?api-version=2023-01-01";
 
         var payload = new
         {
@@ -43,12 +43,14 @@
             }
             else
             {
-                Console.WriteLine($"エラー: {response.StatusCode}");
+                //Console.WriteLine($"エラー: {response.StatusCode}");
+                StatusMessage = $"エラー: {response.StatusCode}";
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"例外: {ex.Message}");
+            //Console.WriteLine($"例外: {ex.Message}");
+            StatusMessage = $"例外: {ex.Message}";
         }
     }
 }
@@ -59,8 +61,12 @@
     アプリケーション(クライアント) ID: 179330d9-698d-4da7-a466-7b7709af98a1
     シークレット ID: 233d41b4-ca16-4bfe-8c8e-76b8b3a8b873
 */
-    <p>送信中...</p>
+@if (!string.IsNullOrEmpty(StatusMessage))
+    {
+        <p><b>@StatusMessage</b></p>
+    }
 }
+
 else
 {
 
