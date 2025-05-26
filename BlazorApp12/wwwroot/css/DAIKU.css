@@ -1,0 +1,270 @@
+/*!
+  * DAIKU CSS
+  * (BootStrap v5.3) 
+  *
+*/
+  body {
+    max-height: fit-content;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    background: #cdcdcd2f;
+  }
+  /* メインエリア #f8f9fa;*/
+  #main {
+    background: #f8f9fa;
+    color: white;
+    padding: 20px 10px 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    flex: 1;
+    overflow-y: auto;
+    color: #40484f;
+  }
+  /* サイドバーのスタイル */
+  #sidebar {
+      width: 30%;
+      background: #f8f9fa;
+      color: #343a40;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+  }
+  #sidebar h2 {
+      margin-bottom: 5px;
+  }
+  #sidebar .btn {
+      width: 80%;
+      margin: 10px 0;
+  }
+  hr {
+    border: 0.05em dotted #E6002E; /* ボーダーの太さと色 */
+    margin: 0.05em 0; /* マージンの設定 */
+  }
+  li {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .ellipsis:hover {
+    position: relative;
+    white-space:inherit;
+    background-color: #fff;
+    z-index: 10;
+    border: solid 1px #E6002E;
+    border-radius: 5px;
+   /* padding: 0px 0px 0px 23px; */
+    top: -0px;
+    left: -0px;
+  }
+  /* 質問・回答キャンパス #f2fafb2b;*/
+  #chatbox {
+      width: 100%;
+      height: 100vh;
+      border: 1px solid #b4b3b3;
+      background: #cdcdcd2f;
+      padding: 10px;
+      overflow-y: scroll;
+      /*scroll-margin-top: 150px;*/
+      scroll-behavior: smooth;
+  }
+  .blur-q{
+    transition: all 0.3s;
+    transition-delay: 0.4s;
+    filter: blur(10px);
+    transition-timing-function: ease-in-out;
+    &.scrollin{
+      filter: blur(0);
+    }
+  }
+  .blur-a{
+    transition: all 0.3s;
+    transition-delay: 0.7s;
+    filter: blur(10px);
+    transition-timing-function: ease-in-out;
+    &.scrollin{
+      filter: blur(0);
+    }
+  }
+  .scrollin{
+      transform: translate(0, 0)!important;
+      opacity: 1!important;
+  }
+  .btn{
+      white-space: nowrap; 
+  }
+  /* 質問入力 */
+  .chat-input {
+      display: flex;
+      gap: 10px;
+  }
+  .chat-input input {
+      flex: 1;
+  }
+  /* BOX配置 */
+  .flexbox {
+    display: flex;
+    justify-content: start;
+    justify-items: start;
+    align-content: normal;
+    align-items: normal;
+  }
+  .flex-column {
+    flex-direction: column;
+  }
+  .flex-row {
+    flex-direction: row;
+  }
+  /* olのスタイル */
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none; /* デフォルトの数字を非表示に */
+    counter-reset: li;
+  }
+  /* ol内のliのスタイル */
+  ol li {
+    position: relative;
+    font-size: 14px;
+   /* padding-left: 1.5em; */
+    line-height: 1.5;
+   /*  padding: 0px 0px 0px 24px; */
+  }
+  /* 2つ目以降のliにmargin-topを指定 */
+  ol li:not(:first-child) {
+    margin-top: 0.5em;
+  }
+  /* 左吹き出し */
+  .popL {
+    margin-right: auto;
+    --bs-popover-max-width: 90%;
+  }
+  /* 右吹き出し */
+  .popR {
+    margin-left: auto;
+    --bs-popover-max-width: 55vw;
+  }
+  /* 吹き出し */
+  .popover {
+    background-color: white;
+    border: 1px solid #ccc;
+    max-width: 75%;
+    position: relative;
+    word-wrap: break-word;
+    padding: 1px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .custom-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    margin-bottom: 1rem;
+    padding: 1.5rem; /* 高さを生む余白 */
+    position: relative;
+  }
+  .label-abs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    font-weight: bold;
+  }
+  .bubble-left::after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #f1f1f1 transparent transparent;
+  }
+  .arrow {
+    position: absolute;       /* 必須！ */
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+  .arrow-right {
+    top: 24px;
+    left: -12px;
+    border-width: 8px 12px 8px 0;
+    border-color: transparent #dddee2 transparent transparent;
+  }
+  .arrow-left {
+    top: 24px;
+    right: -12px;
+    border-width: 8px 0 8px 12px;
+    border-color: transparent transparent transparent #dddee2;
+  }
+  .form-check-input:checked {
+    background-color: rgb(35, 124, 186);
+    border-color: rgb(35, 124, 186);
+}
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: rgb(35, 124, 186) !important;
+  --bs-btn-border-color: rgb(35, 124, 186) !important;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: rgb(35, 124, 186) !important;
+  --bs-btn-hover-border-color: rgb(35, 124, 186) !important;
+  --bs-btn-focus-shadow-rgb: rgb(150, 150, 150);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: rgb(35, 124, 186) !important;
+  --bs-btn-active-border-color: rgb(35, 124, 186) !important;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: rgb(35, 124, 186) !important;
+  --bs-btn-disabled-border-color: rgb(35, 124, 186) !important;
+  --bs-dropdown-link-active-bg: rgb(35, 124, 186) !important;
+}
+.heading-21 {
+  position: relative;
+  padding: .5em .7em .4em;
+  border-bottom: 0.05em solid #E6002E;
+  color: #333333;
+}
+
+.heading-21::before,
+.heading-21::after {
+  position: absolute;
+  left: 30px;
+  bottom: -13.5px;
+  width: 30px;
+  height: 13.5px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  content: '';
+}
+.heading-21::before {
+  background-color: #E6002E;
+}
+.heading-21::after {
+  bottom: -12.9px;
+  background-color: #fff;
+}
+/* タイトル付きの枠線 */
+.textBox {
+  border: 0.01em dotted #8b8c8f;
+  border-radius: 5px;
+  padding: 10px;
+  position: relative;
+}
+.textBox::before {
+  background-color: #e9ebef;
+  color: #333;
+  /*content: "";*/
+  font-weight: bold;
+  left: 10px;
+  padding: 3px 10px;
+  position: absolute;
+  top: -15px;
+}
+.chatsel{
+  padding:10px 10px 10px 10px;
+  background-color: #e9ebef7d;
+}
+.curLin{
+  background-color: rgb(204, 235, 234);
+}
