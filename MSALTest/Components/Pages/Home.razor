@@ -28,29 +28,44 @@
 
         var payload = new
         {
-            properties = new
-            {
-                ftpsState = "FtpsOnly"
-            }
+            properties = new { ftpsState = "FtpsOnly" }
         };
 
         try
         {
             var response = await AzureApiService.SendPutRequestAsync(url, payload);
-            if (response.IsSuccessStatusCode)
+
+            switch (response.StatusCode)
             {
-                showMessage = true;
-            }
-            else
-            {
-                //Console.WriteLine($"エラー: {response.StatusCode}");
-                StatusMessage = $"エラー: {response.StatusCode}";
+                case System.Net.HttpStatusCode.OK:
+                case System.Net.HttpStatusCode.Accepted:
+                    StatusMessage = "✅ 成功しました（hallow）";
+                    break;
+
+                case System.Net.HttpStatusCode.Forbidden:
+                    StatusMessage = "❌ アクセス拒否：権限（RBAC）またはAPIのアクセス許可が不足";
+                    break;
+
+                case System.Net.HttpStatusCode.Unauthorized:
+                    StatusMessage = "❌ 認証エラー：トークンが無効、または期限切れ";
+                    break;
+
+                case System.Net.HttpStatusCode.BadRequest:
+                    StatusMessage = "❌ リクエストが不正：構文ミスまたはパラメータ誤りの可能性";
+                    break;
+
+                case System.Net.HttpStatusCode.NotFound:
+                    StatusMessage = "❌ リソースが見つかりません：URL、リソース名の確認";
+                    break;
+
+                default:
+                    StatusMessage = $"❌ その他エラー: {response.StatusCode}";
+                    break;
             }
         }
         catch (Exception ex)
         {
-            //Console.WriteLine($"例外: {ex.Message}");
-            StatusMessage = $"例外: {ex.Message}";
+            StatusMessage = $"❌ 例外: {ex.Message}";
         }
     }
 }
