@@ -1,0 +1,41 @@
+﻿@page "/SendBtn"
+
+@inject IJSRuntime JS
+
+@rendermode InteractiveServer
+
+<script type="text/javascript" src="js/Load.js"></script>
+
+<script type="text/javascript" src="js/SendBtn.js"></script>
+
+<!-- ボトム質問 -->
+
+<div class="chat-input">
+    <textarea type="text" rows="2" id="userInput" class="form-control" placeholder="ご質問をどうぞ..." @bind="inputText"></textarea>
+</div>
+<div class="chat-input" style="align-self:self-end">
+    <button id="sendButton" class="btn btn-primary" @onclick="SendToServer">&nbsp;送 信&nbsp;</button>&nbsp;&nbsp;&nbsp;
+</div>
+
+@code {
+
+    private string inputText = "";
+
+    // JSから呼び出されるC#メソッド
+    [JSInvokable]
+    public static Task ReceiveBase64FromClient(string base64)
+    {
+        // デコード
+        var decodedString = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(base64));
+
+
+        return Task.CompletedTask;
+    }
+
+    private async Task SendToServer()
+    {
+        await JS.InvokeVoidAsync("JQA_ins", inputText);
+
+        //await JS.InvokeVoidAsync("sendTextToServer", inputText);
+    }
+}
