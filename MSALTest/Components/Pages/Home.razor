@@ -16,7 +16,6 @@
     {
 /*
         例）url = https ://management.azure.com/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/demo-rg/providers/Microsoft.Web/sites/demosite/config/web?api-version=2022-03-01";
-            url = https ://management.azure.com/{ subscriptionId}/{ resourceGroupName}/{ webAppName}/ config / web / api - version
                 <urlの説明>
                     { subscriptionId} 利用中のAzureサブスクリプションのID（固有UUID）5ab88880-b74f-4fe9-bafc-bf8a63007568
                     { resourceGroupName} 対象リソースが属するリソースグループ名      katayma-denso-rg
@@ -24,7 +23,7 @@
                     config / web  App Serviceの「Web構成（Web Settings）」設定 v8.0
                     api - version 使用するAPIのバージョン（固定文字列、安定バージョン）2023-01-01
                 */
-        var url = "https://management.azure.com/subscriptions/5ab88880-b74f-4fe9-bafc-bf8a63007568/katayma-denso-rg/katayma-denso-AP-OAuth/v8.0?api-version=2023-01-01";
+        var url = "https://management.azure.com/subscriptions/5ab88880-b74f-4fe9-bafc-bf8a63007568/resourceGroups/katayma-denso-rg/providers/Microsoft.Web/sites/katayma-denso-AP-OAuth?api-version=2023-01-01";
 
         var payload = new
         {
@@ -34,38 +33,49 @@
         try
         {
             var response = await AzureApiService.SendPutRequestAsync(url, payload);
+            var responseBody = await response.Content.ReadAsStringAsync();
 
             switch (response.StatusCode)
             {
                 case System.Net.HttpStatusCode.OK:
+                case System.Net.HttpStatusCode.Created:
                 case System.Net.HttpStatusCode.Accepted:
                     StatusMessage = "✅ 成功しました（hallow）";
                     break;
 
                 case System.Net.HttpStatusCode.Forbidden:
-                    StatusMessage = "❌ アクセス拒否：権限（RBAC）またはAPIのアクセス許可が不足";
+                    StatusMessage = $"❌ アクセス拒否（403 Forbidden）\n"
+                                  + $"理由：サービスプリンシパルにRBACロールが割り当てられていない、またはAPIのアクセス許可が不足しています。\n"
+                                  + $"詳細: {responseBody}";
                     break;
 
                 case System.Net.HttpStatusCode.Unauthorized:
-                    StatusMessage = "❌ 認証エラー：トークンが無効、または期限切れ";
+                    StatusMessage = $"❌ 認証エラー（401 Unauthorized）\n"
+                                  + $"トークンが無効か、Azure AD アプリにクライアントシークレットが正しく設定されていない可能性があります。\n"
+                                  + $"詳細: {responseBody}";
                     break;
 
                 case System.Net.HttpStatusCode.BadRequest:
-                    StatusMessage = "❌ リクエストが不正：構文ミスまたはパラメータ誤りの可能性";
+                    StatusMessage = $"❌ 不正なリクエスト（400 Bad Request）\n"
+                                  + $"リクエスト構文やパラメータに問題がある可能性があります。\n"
+                                  + $"詳細: {responseBody}";
                     break;
 
                 case System.Net.HttpStatusCode.NotFound:
-                    StatusMessage = "❌ リソースが見つかりません：URL、リソース名の確認";
+                    StatusMessage = $"❌ リソースが見つかりません（404 Not Found）\n"
+                                  + $"URLまたは対象リソース名に誤りがある可能性があります。\n"
+                                  + $"詳細: {responseBody}";
                     break;
 
                 default:
-                    StatusMessage = $"❌ その他エラー: {response.StatusCode}";
+                    StatusMessage = $"❌ 未処理のエラー: {(int)response.StatusCode} {response.StatusCode}\n"
+                                  + $"詳細: {responseBody}";
                     break;
             }
         }
         catch (Exception ex)
         {
-            StatusMessage = $"❌ 例外: {ex.Message}";
+            StatusMessage = $"❌ 例外発生: {ex.Message}";
         }
     }
 }
